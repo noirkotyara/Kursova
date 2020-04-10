@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 public class FlappySquare implements ActionListener{
-	
+	int ImMalukh_Diana;
 	public static FlappySquare flappySquare;
 	public final int width = 400, height = 800;
 	public Render render;
