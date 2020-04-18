@@ -57,9 +57,7 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 		
 		timer.start();
 	}
-	
-		//if(event.getKeyCode() == KeyEvent.VK_SPACE) {
-	
+		
 		
 	
 	public void addColumn(boolean a) {
