@@ -1,9 +1,11 @@
 package flappySquare;
-
+//noirkotyara`s project 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
+//import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -13,7 +15,9 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+//import javax.swing.JLabel;
 import javax.swing.Timer;
 
 public class FlappySquare implements ActionListener, MouseListener, KeyListener{
@@ -26,8 +30,10 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 	public Random random;
 	public int ticks, yMotion;
 	public boolean gameOver;
+	public boolean startspace;
 	public boolean started;
 	public int score;
+	
 	
 	public FlappySquare() {
 		
@@ -35,6 +41,7 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 		render = new Render();
 		Timer timer = new Timer(20, this);
 		random = new Random();
+		//JLabel jLabel = new JLabel("test");
 		
 		jframe.add(render);
 		jframe.setTitle("flappySquare");  
@@ -44,10 +51,12 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 		jframe.setVisible(true);
 		jframe.addMouseListener(this);
 		jframe.addKeyListener(this);
+		//jframe.add(jLabel);
 		
-		bird = new Rectangle(100, 200, 20, 20 );
+		bird = new Rectangle(100, 200, 59, 44 );
 		columns = new ArrayList<Rectangle>();
 		columns.clear();
+		
 		
 		addColumn(true);
 		addColumn(true);
@@ -61,7 +70,7 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 		
 	
 	public void addColumn(boolean a) {
-		int space = 300;
+		int space = 320;
 		int Width = 60;
 		int offset = 60 + random.nextInt(400); //   50    300
 		
@@ -69,10 +78,7 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 		columns.add(new Rectangle(width + Width + columns.size()*150 , height - offset - 145, Width, offset)); 
 		columns.add(new Rectangle(width + Width + (columns.size() - 1)*150,0, Width, height - offset - space ));
 	}	
-		//else {
-			//columns.add(new Rectangle(columns.get(columns.size() - 1).x, height - Height - 145, Width, Height));
-			//columns.add(new Rectangle(columns.get(columns.size() - 1).x,0, Width, height - Height - space ));
-		//}
+		
 		}
 		
 	public void paintColumn(Graphics g, Rectangle column) {
@@ -95,7 +101,7 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 		if(gameOver) {
 
 			
-			bird = new Rectangle(100, 200, 20, 20 );
+			bird = new Rectangle(100, 200, 59, 44 );
 			columns = new ArrayList<Rectangle>();
 			columns.clear();
 			
@@ -143,8 +149,8 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 		}
 		
 		for (Rectangle column : columns) {
-			int space = 300;
-			if(column.y == 0 && bird.x + bird.width / 2 > column.x + column.width/2 - speed && bird.x + bird.width / 2 < column.x + column.width/2 + speed ) {			
+			int space = 320;
+			if(!gameOver && column.y == 0 && bird.x + 10 > column.x + 70 - speed && bird.x + 10< column.x + 70 + speed ) {			
 				score++;
 				
 			}
@@ -184,9 +190,12 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 				
 			}
 		if(gameOver) {
-		if(bird.y  > height - 205 + bird.height) {
-				bird.y  = height - 205 + bird.height;
+		if(bird.y  > height - 250 + bird.height) {
+				bird.y  = height - 250 + bird.height;
 			}	
+		if(bird.y < 0) {
+			bird.y = 0;
+		}
 		}
 		
 		
@@ -197,37 +206,53 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 	}
 	
 	
-	
 	public void repaint(Graphics g) {
 		
 		g.setColor(Color.white);  //background
 		g.fillRect(0, 0, width, height);
 		
+		Image imgbackground = new ImageIcon("src/BackNight.png").getImage();
+		g.drawImage(imgbackground, 0, 0, null);
+		
+		
 		for(Rectangle column : columns) {//: in
 			paintColumn(g, column);
 		}
-		g.setColor(Color.DARK_GRAY);//platform
+		g.setColor(Color.lightGray);//platform
 		g.fillRect(0, height - 150, width, 150);
 		
-		g.setColor(Color.blue);//grass
+		g.setColor(Color.black);//grass
 		g.fillRect(0, height - 150, width, 15);
 		
-		g.setColor(Color.black);//bird
-		g.fillRect(bird.x, bird.y, bird.width, bird.height);
+		//g.setColor(Color.);
+		
+
+		Image imgbird2 = new ImageIcon("src/bird2.png").getImage();
+		g.drawImage(imgbird2, bird.x, bird.y, null);
+		
+		//g.setColor(Color.black);//bird
+		//g.fillRect(bird.x, bird.y, bird.width, bird.height);
 		
 		
 		
 		
 		if(gameOver) {
-			g.setColor(Color.black);
-		g.setFont(new Font("Arial",5,50 )); // 5 - жирність 50 - size
-		
-			g.drawString("Game Over", 50, height/3 );
+			Image imgGameover = new ImageIcon("src/GameOver.png").getImage();
+			g.drawImage(imgGameover, 90, 200, null);
 		}
 		if(!started) {
-			g.setColor(Color.black);
-			g.setFont(new Font("Arial",5,20 ));
-			g.drawString("Press space to play", 0, height/2);
+			
+			
+	    /*    Image image = Toolkit.getDefaultToolkit().createImage("src/click.gif");
+	        ImageIcon imageIcon = new ImageIcon(image);
+	        imageIcon.setImageObserver(jLabel);
+	        jLabel.setIcon(imageIcon);
+*/
+			
+			
+			Image imgplay = new ImageIcon("src/play.png").getImage();
+			g.drawImage(imgplay, 125, 500, null);
+			
 			
 		}
 		g.setColor(Color.black);
@@ -239,6 +264,9 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 	}
 	
 	
+	
+
+
 	public static void main(String[] args) {
 		flappySquare = new FlappySquare();
 		System.out.println("Nice to meet you)\nFlappy Square is glad to see you)\nLet`s try this challenge!\nGood luck!");
