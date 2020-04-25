@@ -1,27 +1,45 @@
 package flappySquare;
-//noirkotyara`s project 
+ 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.MouseInfo;
 import java.awt.Rectangle;
-//import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-//import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 
-public class FlappySquare implements ActionListener, MouseListener, KeyListener{
+public class FlappySquare extends JPanel implements ActionListener, MouseListener, KeyListener{
 	
+	/**
+	 * noirkotyara's project
+	 */
+	private static final long serialVersionUID = 1L;
 	public static FlappySquare flappySquare;
 	public final int width = 400, height = 800;
 	public Render render;
@@ -33,25 +51,34 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 	public boolean startspace;
 	public boolean started;
 	public int score;
+	public JButton myButton;
+	public JTextField textField;
+	Start start = new Start();
+	public static int mouseX;
+	public static int mouseY;
+	public String imgplay;
+	public int scoretemporary;
+	public int startercount ;
+	public JFrame jframe = new JFrame();
 	
-	
-	public FlappySquare() {
+	public FlappySquare() {    
 		
-		JFrame jframe = new JFrame();
+		
 		render = new Render();
 		Timer timer = new Timer(20, this);
 		random = new Random();
-		//JLabel jLabel = new JLabel("test");
+		
 		
 		jframe.add(render);
 		jframe.setTitle("flappySquare");  
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframe.setSize(width, height);
-		jframe.setResizable(true);
+		jframe.setResizable(false);
 		jframe.setVisible(true);
 		jframe.addMouseListener(this);
 		jframe.addKeyListener(this);
-		//jframe.add(jLabel);
+
+		
 		
 		bird = new Rectangle(100, 200, 59, 44 );
 		columns = new ArrayList<Rectangle>();
@@ -66,8 +93,6 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 		
 		timer.start();
 	}
-		
-		
 	
 	public void addColumn(boolean a) {
 		int space = 320;
@@ -107,6 +132,7 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 			
 			yMotion = 0;
 			score = 0;
+			
 			addColumn(true);
 			addColumn(true);
 			addColumn(true);
@@ -122,6 +148,7 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 	public void actionPerformed(ActionEvent e) {
 		ticks ++;
 		if(started) {
+			startercount++;
 		float speed = 5;
 		for(int i = 0; i < columns.size(); i++) {
 			Rectangle column = columns.get(i);
@@ -199,21 +226,45 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 		}
 		
 		
-		
 		bird.y += yMotion; /// can be changed for another step of the game //bird.y -=yMotion
 	}
+		else {
+			if (   MouseInfo.getPointerInfo().getLocation().x > start.button1.getX()  && MouseInfo.getPointerInfo().getLocation().x  < start.button1.getX() + start.button1.getWidth() && MouseInfo.getPointerInfo().getLocation().y > start.button1.getY()  && MouseInfo.getPointerInfo().getLocation().y < start.button1.getY() + start.button1.getHeight()) {
+				start.button1.s = "src/play.png";
+				
+			}
+			else {
+				start.button1.s = "src/playpressdark.png";
+			}
+		}
+		
+		
 		render.repaint();
 	}
 	
 	
 	public void repaint(Graphics g) {
 		
-		g.setColor(Color.white);  //background
-		g.fillRect(0, 0, width, height);
+	//	g.setColor(Color.white);  //background
+	//	g.fillRect(0, 0, width, height);
 		
 		Image imgbackground = new ImageIcon("src/BackNight.png").getImage();
 		g.drawImage(imgbackground, 0, 0, null);
 		
+	/*	if(!started) {            																don`t forget about this shit
+			JButton buttonPlay = new JButton("");
+		
+		buttonPlay.setIcon(new ImageIcon("src/play.png"));
+		
+		jframe.add(buttonPlay);	
+		
+	      buttonPlay.setBounds(40,100,110,60);
+	      
+		}*/
+		
+		
+		//Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
+      //  myButton.setCursor(cursor);
 		
 		for(Rectangle column : columns) {//: in
 			paintColumn(g, column);
@@ -225,41 +276,63 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 		g.fillRect(0, height - 150, width, 15);
 		
 		//g.setColor(Color.);
-		
-
-		Image imgbird2 = new ImageIcon("src/bird2.png").getImage();
+		if(!gameOver) {
+			Image imgbird2 = new ImageIcon("src/bird2.png").getImage();
 		g.drawImage(imgbird2, bird.x, bird.y, null);
+		}
+		else {
+			Image imgbird2GO = new ImageIcon("src/bird2GO.png").getImage();
+			g.drawImage(imgbird2GO, bird.x, bird.y, null);
+		}
 		
-		//g.setColor(Color.black);//bird
-		//g.fillRect(bird.x, bird.y, bird.width, bird.height);
-		
-		
-		
+				
 		
 		if(gameOver) {
+			//Image imgoops = new ImageIcon("src/oopsBIG.gif").getImage();
+			//g.drawImage(imgoops, -60, 40, null);
+			
 			Image imgGameover = new ImageIcon("src/GameOver.png").getImage();
 			g.drawImage(imgGameover, 90, 200, null);
+			
+		
 		}
 		if(!started) {
+		
+			//start.draw(g);
+			start.button1.draw(g);
 			
-			
-	    /*    Image image = Toolkit.getDefaultToolkit().createImage("src/click.gif");
-	        ImageIcon imageIcon = new ImageIcon(image);
-	        imageIcon.setImageObserver(jLabel);
-	        jLabel.setIcon(imageIcon);
-*/
-			
-			
-			Image imgplay = new ImageIcon("src/play.png").getImage();
-			g.drawImage(imgplay, 125, 500, null);
-			
+		//	Image imgclick = new ImageIcon("src/Egne.gif").getImage();
+			//g.drawImage(imgclick, 90, 340, null);
 			
 		}
-		g.setColor(Color.black);
+		if(started) {
+			g.setColor(Color.black);
 		g.setFont(new Font("Arial",5,50 ));
 			g.drawString(String.valueOf(score), width / 2 -20 ,60);
 			
+			
 		
+		}
+		
+	
+		
+			if(gameOver) {
+				
+				
+				if(score > scoretemporary) {
+					scoretemporary = score;
+					g.setColor(Color.black);
+					g.setFont(new Font("Arial",5,100 ));
+						g.drawString(String.valueOf(scoretemporary), width / 2 -20 ,30);
+				}
+				else if (score < scoretemporary){
+					g.setColor(Color.black);
+				g.setFont(new Font("Arial",5,100 ));
+					g.drawString(String.valueOf(scoretemporary), width / 2 -20 ,150);
+				}
+			
+			
+		}
 		
 	}
 	
@@ -273,7 +346,7 @@ public class FlappySquare implements ActionListener, MouseListener, KeyListener{
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
+	public void mouseClicked(MouseEvent e) {
 	//	fly();
 		
 	}
