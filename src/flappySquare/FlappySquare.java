@@ -1,15 +1,9 @@
 package flappySquare;
  
-import java.awt.BorderLayout;
+
 import java.awt.Color;
-import java.awt.ComponentOrientation;
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.MouseInfo;
 import java.awt.Rectangle;
@@ -19,14 +13,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -53,7 +43,10 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 	public int score;
 	public JButton myButton;
 	public JTextField textField;
+	
 	Start start = new Start();
+	Background background = new Background();
+	
 	public static int mouseX;
 	public static int mouseY;
 	public String imgplay;
@@ -73,7 +66,7 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 		jframe.setTitle("flappySquare");  
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframe.setSize(width, height);
-		jframe.setResizable(false);
+		jframe.setResizable(true);
 		jframe.setVisible(true);
 		jframe.addMouseListener(this);
 		jframe.addKeyListener(this);
@@ -229,42 +222,41 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 		bird.y += yMotion; /// can be changed for another step of the game //bird.y -=yMotion
 	}
 		else {
-			if (   MouseInfo.getPointerInfo().getLocation().x > start.button1.getX()  && MouseInfo.getPointerInfo().getLocation().x  < start.button1.getX() + start.button1.getWidth() && MouseInfo.getPointerInfo().getLocation().y > start.button1.getY()  && MouseInfo.getPointerInfo().getLocation().y < start.button1.getY() + start.button1.getHeight()) {
-				start.button1.s = "src/play.png";
-				
-			}
-			else {
-				start.button1.s = "src/playpressdark.png";
-			}
+			touchButton(start.button1);
+			
 		}
-		
+		for(int i = 0; i < 2; i++) {
+				background.back[i].location.x = (int) (background.back[i].location.x - background.speed);	
+			}
+			
+			if(background.back[0].location.x < -893) {
+				background.back[0].location.x = 0;
+				background.back[1].location.x = 893;
+			}
 		
 		render.repaint();
 	}
-	
+	private void touchButton(Start.Button b) {
+				if (   MouseInfo.getPointerInfo().getLocation().x > b.getX()  && MouseInfo.getPointerInfo().getLocation().x  < b.getX() + start.button1.getWidth() && MouseInfo.getPointerInfo().getLocation().y > b.getY()  && MouseInfo.getPointerInfo().getLocation().y < b.getY() + b.getHeight()) {
+				
+				if(b.equals(start.button1)) { b.s = "src/play.png";}
+			}
+			else {
+				if(b.equals(start.button1)) { b.s = "src/playpressdark.png";}
+				
+			}
+			}
 	
 	public void repaint(Graphics g) {
 		
 	//	g.setColor(Color.white);  //background
 	//	g.fillRect(0, 0, width, height);
 		
-		Image imgbackground = new ImageIcon("src/BackNight.png").getImage();
-		g.drawImage(imgbackground, 0, 0, null);
-		
-	/*	if(!started) {            																don`t forget about this shit
-			JButton buttonPlay = new JButton("");
-		
-		buttonPlay.setIcon(new ImageIcon("src/play.png"));
-		
-		jframe.add(buttonPlay);	
-		
-	      buttonPlay.setBounds(40,100,110,60);
-	      
-		}*/
-		
-		
-		//Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
-      //  myButton.setCursor(cursor);
+		//Image imgbackground = new ImageIcon("src/BackNight.png").getImage();
+	//	g.drawImage(imgbackground, 0, 0, null);
+		for( int i = 0; i < 2; i++) {
+			g.drawImage(background.back[i].back, background.back[i].location.x,background.back[i].location.y, null);
+		}
 		
 		for(Rectangle column : columns) {//: in
 			paintColumn(g, column);

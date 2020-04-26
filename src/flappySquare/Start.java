@@ -10,19 +10,19 @@ import javax.swing.ImageIcon;
 public class Start {
 	
 	public static boolean click = false;
-	Button button1 = new Button (140, 445, 108, 64 , "src/playpressdark.png");
+	Button button1 = new Button (140, 452, 108, 64 , "src/playpressdark.png");
 	
 	
 	class Button{
 		
 	
 	
-	private Color color1;
+	//private Color color1;
 	private double x;
 	private double y;
 	private double width;
 	private double height;
-	public int i;
+	//public int i;
 	//public String f;
 	public String s;
 	
@@ -35,7 +35,7 @@ public class Start {
 		this.height = height;
 		this.s = s;
 		//this.f = f;
-		color1 = Color.white;
+		//color1 = Color.white;
 		
 	}
 	
