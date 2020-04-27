@@ -1,22 +1,18 @@
 package flappySquare;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
 
-
-public class Start {
+public class Birds {
 	
 	public static boolean click = false;
-	Button button1 = new Button (140, 452, 108, 64 , "src/playpressdark.png");
-	Button button2 = new Button (140, 526, 108, 64 , "src/birdpressn.png");
+	Button bird1 = new Button (140, 452, 59, 44 , "src/bird2.png"); //bird2GO
+	Button bird2 = new Button (200, 452, 59, 37 , "src/birdpink.png"); //birdpinkF
+	Button bird3 = new Button (260, 452, 59, 59 , "src/birdgreen.png"); //bird3F
 	
 	class Button{
 		
-	
-	
 	//private Color color1;
 	private double x;
 	private double y;
@@ -74,5 +70,4 @@ public class Start {
 	}
 
 
-	
 }

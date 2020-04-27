@@ -24,6 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
+import flappySquare.Start.Button;
+
 public class FlappySquare extends JPanel implements ActionListener, MouseListener, KeyListener{
 	
 	/**
@@ -41,11 +43,12 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 	public boolean startspace;
 	public boolean started;
 	public int score;
-	public JButton myButton;
 	public JTextField textField;
+	public boolean choosebirds = false;
 	
 	Start start = new Start();
 	Background background = new Background();
+	Birds birds = new Birds();
 	
 	public static int mouseX;
 	public static int mouseY;
@@ -53,6 +56,9 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 	public int scoretemporary;
 	public int startercount ;
 	public JFrame jframe = new JFrame();
+	
+	
+
 	
 	public FlappySquare() {    
 		
@@ -107,8 +113,6 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 	 
 	public void fly() {
 		
-		
-		
 		if(!gameOver) {
 			yMotion = 0;
 		}
@@ -137,10 +141,20 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 		}
 	}
 	
+	//public void chooseBird(){
+		
+				
+	//		}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		ticks ++;
-		if(started) {
+		//if(choosebirds == true) {
+			
+			
+	//	}
+	//	else {
+			if(started) {
 			startercount++;
 		float speed = 5;
 		for(int i = 0; i < columns.size(); i++) {
@@ -223,6 +237,10 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 	}
 		else {
 			touchButton(start.button1);
+			touchButton(start.button2);
+			
+			
+		
 			
 		}
 		for(int i = 0; i < 2; i++) {
@@ -234,40 +252,61 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 				background.back[1].location.x = 893;
 			}
 		
+	//	}
+		
 		render.repaint();
 	}
-	private void touchButton(Start.Button b) {
-				if (   MouseInfo.getPointerInfo().getLocation().x > b.getX()  && MouseInfo.getPointerInfo().getLocation().x  < b.getX() + start.button1.getWidth() && MouseInfo.getPointerInfo().getLocation().y > b.getY()  && MouseInfo.getPointerInfo().getLocation().y < b.getY() + b.getHeight()) {
+	
+	 
+	
+	public void touchButton(Start.Button b) {
+				if (MouseInfo.getPointerInfo().getLocation().x > b.getX()  && MouseInfo.getPointerInfo().getLocation().x  < b.getX() + b.getWidth() && MouseInfo.getPointerInfo().getLocation().y > b.getY()  && MouseInfo.getPointerInfo().getLocation().y < b.getY() + b.getHeight()) {
 				
 				if(b.equals(start.button1)) { b.s = "src/play.png";}
+				if(b.equals(start.button2)) { b.s = "src/birdpressndark.png";}
 			}
 			else {
 				if(b.equals(start.button1)) { b.s = "src/playpressdark.png";}
-				
+				if(b.equals(start.button2)) { b.s = "src/birdpressn.png";}
 			}
 			}
+	public void touchBird(Birds.Button bb) {
+		if (MouseInfo.getPointerInfo().getLocation().x > bb.getX()  && MouseInfo.getPointerInfo().getLocation().x  <  bb.getX() + bb.getWidth() && MouseInfo.getPointerInfo().getLocation().y > bb.getY()  && MouseInfo.getPointerInfo().getLocation().y < bb.getY() + bb.getHeight()) {
+			if(bb.equals(birds.bird1)) { bb.s = "src/bird2.png";}
+			if(bb.equals(birds.bird2)) { bb.s = "src/birdpink.png";}
+			if(bb.equals(birds.bird3)) { bb.s = "src/birdgreen.png";}
+		}
+		else {
+			if(bb.equals(birds.bird1)) { bb.s = "src/playpressdark.png";}
+			if(bb.equals(birds.bird2)) { bb.s = "src/playpressdark.png";}
+			if(bb.equals(birds.bird3)) { bb.s = "src/playpressdark.png";}
+			
+			
+		}		
+	}
 	
 	public void repaint(Graphics g) {
 		
-	//	g.setColor(Color.white);  //background
-	//	g.fillRect(0, 0, width, height);
 		
-		//Image imgbackground = new ImageIcon("src/BackNight.png").getImage();
-	//	g.drawImage(imgbackground, 0, 0, null);
 		for( int i = 0; i < 2; i++) {
 			g.drawImage(background.back[i].back, background.back[i].location.x,background.back[i].location.y, null);
 		}
 		
+		
+		
 		for(Rectangle column : columns) {//: in
 			paintColumn(g, column);
 		}
-		g.setColor(Color.lightGray);//platform
+		g.setColor(Color.black);//platform
 		g.fillRect(0, height - 150, width, 150);
 		
-		g.setColor(Color.black);//grass
+		g.setColor(Color.DARK_GRAY);//grass
 		g.fillRect(0, height - 150, width, 15);
 		
-		//g.setColor(Color.);
+		
+		Image imgexit = new ImageIcon("src/exit.png").getImage();
+		g.drawImage(imgexit, 330, 10, null);
+		
 		if(!gameOver) {
 			Image imgbird2 = new ImageIcon("src/bird2.png").getImage();
 		g.drawImage(imgbird2, bird.x, bird.y, null);
@@ -275,39 +314,39 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 		else {
 			Image imgbird2GO = new ImageIcon("src/bird2GO.png").getImage();
 			g.drawImage(imgbird2GO, bird.x, bird.y, null);
-		}
-		
-				
+		}	
 		
 		if(gameOver) {
-			//Image imgoops = new ImageIcon("src/oopsBIG.gif").getImage();
-			//g.drawImage(imgoops, -60, 40, null);
+					
+			Image imgGameover = new ImageIcon("src/GameOverwhite.png").getImage();
+			g.drawImage(imgGameover, 50, 100, null);
 			
-			Image imgGameover = new ImageIcon("src/GameOver.png").getImage();
-			g.drawImage(imgGameover, 90, 200, null);
 			
-		
+			Image imgscoretable = new ImageIcon("src/tbrechor.png").getImage();
+		//	Image imgscoretable = new ImageIcon("src/tsrechorpink.png").getImage();
+			g.drawImage(imgscoretable, 20, 210, null);
+			
+		Image imgclick = new ImageIcon("src/fire.gif").getImage();
+			g.drawImage(imgclick, 90, 450, null);
 		}
 		if(!started) {
 		
-			//start.draw(g);
 			start.button1.draw(g);
+			start.button2.draw(g);
 			
-		//	Image imgclick = new ImageIcon("src/Egne.gif").getImage();
-			//g.drawImage(imgclick, 90, 340, null);
-			
+			Image imgfb = new ImageIcon("src/fblastp.png").getImage();
+			g.drawImage(imgfb, 30, 180, null);
 		}
 		if(started) {
 			g.setColor(Color.black);
 		g.setFont(new Font("Arial",5,50 ));
 			g.drawString(String.valueOf(score), width / 2 -20 ,60);
-			
-			
 		
+			Image imglogof = new ImageIcon("src/flappyNight.png").getImage();
+			g.drawImage(imglogof, 220,680, null);
+			Image imglogob = new ImageIcon("src/birdNight.png").getImage();
+			g.drawImage(imglogob, 305, 705, null);
 		}
-		
-	
-		
 			if(gameOver) {
 				
 				
@@ -325,13 +364,9 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 			
 			
 		}
+			
 		
 	}
-	
-	
-	
-
-
 	public static void main(String[] args) {
 		flappySquare = new FlappySquare();
 		System.out.println("Nice to meet you)\nFlappy Square is glad to see you)\nLet`s try this challenge!\nGood luck!");
@@ -339,7 +374,16 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-	//	fly();
+		if(!started) {
+			if ( MouseInfo.getPointerInfo().getLocation().x > 140  && MouseInfo.getPointerInfo().getLocation().x  < 140 + 108 && MouseInfo.getPointerInfo().getLocation().y > 452  && MouseInfo.getPointerInfo().getLocation().y < 452 + 64) {
+			System.out.print("Click");
+			started = true;
+			
+		}
+			else if(MouseInfo.getPointerInfo().getLocation().x > 140  && MouseInfo.getPointerInfo().getLocation().x  < 140 + 108 && MouseInfo.getPointerInfo().getLocation().y > 526  && MouseInfo.getPointerInfo().getLocation().y < 526 + 64) {
+				System.out.print("Click_BIRD_CHOOSE");	
+		}
+	}
 		
 	}
 
@@ -378,8 +422,8 @@ public class FlappySquare extends JPanel implements ActionListener, MouseListene
 		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
 			fly();
 			
-		}
-		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+		}	
+	if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			start();
 			
 		}
