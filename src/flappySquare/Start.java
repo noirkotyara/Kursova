@@ -10,8 +10,12 @@ import javax.swing.ImageIcon;
 public class Start {
 	
 	public static boolean click = false;
-	Button button1 = new Button (140, 452, 108, 64 , "src/playpressdark.png");
-	Button button2 = new Button (140, 526, 108, 64 , "src/birdpressn.png");
+	Button button1 = new Button (140, 510, 108, 64 , "src/playpressdark.png");
+	Button button2 = new Button (140, 580, 108, 90 , "src/birdpressn.png");
+	Button exit = new Button (330, 10, 50, 50, "src/exit.png");
+	Button ok = new Button (140, 410, 120, 80 , "src/okk.png");  //540
+	Button restart = new Button (20, 685, 120, 80 , "src/playpressdark.png"); 
+	Button menu = new Button (330, 600, 50, 50, "src/menu.png");
 	
 	class Button{
 		

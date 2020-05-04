@@ -7,9 +7,9 @@ import javax.swing.ImageIcon;
 public class Birds {
 	
 	public static boolean click = false;
-	Button bird1 = new Button (140, 452, 59, 44 , "src/bird2.png"); //bird2GO
-	Button bird2 = new Button (200, 452, 59, 37 , "src/birdpink.png"); //birdpinkF
-	Button bird3 = new Button (260, 452, 59, 59 , "src/birdgreen.png"); //bird3F
+	Button bird1 = new Button (85, 340, 90, 90 , "src/bird2transp.png"); //bird2GO
+	Button bird2 = new Button (170, 340, 90, 90 , "src/birdpinktransp2.png"); //birdpinkF
+	Button bird3 = new Button (250, 335, 90, 90 , "src/birdgreentransp2.png"); //bird3F
 	
 	class Button{
 		
